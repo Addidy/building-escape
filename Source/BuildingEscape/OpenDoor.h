@@ -28,8 +28,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* PressurePlate;
 
-	UPROPERTY(EditAnywhere)
-		AActor* ActorThatOpens;
+	//UPROPERTY(EditAnywhere)
+	AActor* ActorThatOpens;
 
 	void OpenDoor();
 
