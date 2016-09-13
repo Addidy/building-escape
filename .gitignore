@@ -113,4 +113,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # custom git edit
-Content/StarterContent/
+Content/StarterContent/Textures
+Content/StarterContent/HDRI
