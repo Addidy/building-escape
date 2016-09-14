@@ -22,17 +22,22 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("Grabber reporting for duty!"));
+	FindPhysicsHandleComponent();	
+	SetupInputComponent();	
+}
 
-	///Look for attached Physics Handle
+///Look for attached Physics Handle
+void UGrabber::FindPhysicsHandleComponent() {
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	
+
 	if (PhysicsHandle) {
 		// Physics handle is found
 	} else {
 		UE_LOG(LogTemp, Error, TEXT("%s has no PhysicsHandle component"), *GetOwner()->GetName());
-	}
+	}	
+}
 
+void UGrabber::SetupInputComponent() {
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 	if (InputComponent) {
 		UE_LOG(LogTemp, Warning, TEXT("%s found InputComponent"), *GetOwner()->GetName());
@@ -42,15 +47,21 @@ void UGrabber::BeginPlay()
 	} else {
 		UE_LOG(LogTemp, Error, TEXT("%s has no InputComponent"), *GetOwner()->GetName());
 	}
-	
 }
 
 void UGrabber::Grab() {
 	UE_LOG(LogTemp, Warning, TEXT("Grab Action called!"));
+
+	///LINE TRACE and reach any actors with physics body collision channel set
+	GetFirstPhysicsBodyInReach();
+
+	///IF we hit something then attach a physics handle
+	//TODO attach physics handle
 }
 
 void UGrabber::Release() {
 	UE_LOG(LogTemp, Warning, TEXT("Release Action called!"));
+	//TODO release physics handle
 }
 
 
@@ -59,6 +70,11 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
+	// if the physics handle is attached
+		//move the object that we're holding
+}
+
+const FHitResult UGrabber::GetFirstPhysicsBodyInReach() {
 	FVector PlayerViewPointLocation;
 	FRotator PlayerViewPointRotation;
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(OUT PlayerViewPointLocation, OUT PlayerViewPointRotation);
@@ -81,5 +97,7 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 	if (ActorHit) {
 		UE_LOG(LogTemp, Warning, TEXT("Tracehit: %s"), *(ActorHit->GetName()));
 	}
+
+	return FHitResult();
 }
 
