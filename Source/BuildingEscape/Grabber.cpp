@@ -38,6 +38,7 @@ void UGrabber::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("%s found InputComponent"), *GetOwner()->GetName());
 		///Bind the input axis
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 	} else {
 		UE_LOG(LogTemp, Error, TEXT("%s has no InputComponent"), *GetOwner()->GetName());
 	}
@@ -46,6 +47,10 @@ void UGrabber::BeginPlay()
 
 void UGrabber::Grab() {
 	UE_LOG(LogTemp, Warning, TEXT("Grab Action called!"));
+}
+
+void UGrabber::Release() {
+	UE_LOG(LogTemp, Warning, TEXT("Release Action called!"));
 }
 
 
