@@ -28,15 +28,6 @@ void UOpenDoor::BeginPlay()
 	}
 }
 
-void UOpenDoor::OpenDoor() {
-	//Owner->SetActorRotation(FRotator(0.f, OpenAngle, 0.f));
-	OnOpenRequest.Broadcast();
-}
-
-void UOpenDoor::CloseDoor() {
-	Owner->SetActorRotation(FRotator(0.f, 0.f, 0.f));
-}
-
 // Called every frame
 void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
@@ -46,14 +37,10 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 
 	//Poll the Trigger Volume
 	//If the ActorThatOpens is in the volume
-	if (GetTotalMassOfActorsOnPlate() > 20.f) { //TODO change to editable parameter
-		OpenDoor();
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
-	}
-
-	//Check if it's time to close the door
-	if (DoorCloseDelay <= GetWorld()->GetTimeSeconds() - LastDoorOpenTime) {
-		CloseDoor();
+	if (GetTotalMassOfActorsOnPlate() > TriggerMass) {
+		OnOpen.Broadcast();
+	} else {
+		OnClose.Broadcast();
 	}
 
 }
